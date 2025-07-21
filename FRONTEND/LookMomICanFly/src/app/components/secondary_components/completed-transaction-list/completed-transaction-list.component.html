@@ -1,0 +1,17 @@
+<div class="transaction-list" *ngIf="transactions$ | async as allTransactions">
+    <ng-container *ngFor="let transaction of allTransactions">
+      <app-transaction-box-summary 
+        *ngIf="transaction.status === 'DELIVERED' || 
+               transaction.status === 'FAKE PRODUCT' || 
+               transaction.status === 'CANCELLED' || 
+               transaction.status === 'FAILED' || 
+               transaction.status === 'COMPLETED'"
+        [transaction]="transaction"
+        [sectionParam]="sectionParam">
+      </app-transaction-box-summary>
+    </ng-container>
+    
+    <p class="no-transactions" *ngIf="allTransactions.length === 0">
+      No completed transactions.
+    </p>
+</div>

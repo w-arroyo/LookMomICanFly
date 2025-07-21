@@ -1,0 +1,104 @@
+<div class="create-ask-container" *ngIf="{
+  product: product$ | async,
+  lowestAsk: lowestAsk$ | async,
+  highestBid: highestBid$ | async,
+  addresses: addresses$ | async,
+  bankAccount: bankAccount$ | async,
+  phoneNumber: phoneNumber$ | async,
+  sellingFee: sellingFee$ | async,
+  shippingFee: shippingFee$ | async
+} as data; else loadingTemplate">
+
+  <div class="product-header">
+    <h1>{{data.product?.name}}</h1>
+    <span class="size-label">Size: {{size}}</span>
+  </div>
+
+  <div class="ask-content">
+    <div class="product-image-container">
+      <img [src]="getImage(data.product?.name)" [alt]="data.product?.name" class="product-image">
+    </div>
+
+    <div class="ask-form-container">
+      <form [formGroup]="askForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="price">Your Ask Price (€)</label>
+          <input type="number" id="price" formControlName="price" 
+            (blur)="adjustPriceToHighestBid(data.highestBid?.message || '0')"
+            step="1" min="1"> <!-- step="1" makes user type int positive numbers -->
+        </div>
+
+        <div class="price-info">
+          <div class="price-info-row">
+            <span>Lowest Ask:</span>
+            <span>{{(data.lowestAsk?.message || '')}}€</span>
+          </div>
+          <div class="price-info-row">
+            <span>Highest Bid:</span>
+            <span>{{(data.highestBid?.message || '')}}€</span>
+          </div>
+        </div>
+
+        <div class="user-info">
+          <div class="info-row">
+            <span>Bank Account:</span>
+            <span>{{data.bankAccount?.number || 'Left to provide.'}}</span>
+          </div>
+          <div class="info-row">
+            <span>Phone Number:</span>
+            <span>{{data.phoneNumber?.prefix || ''}} {{data.phoneNumber?.number || 'Left to provide.'}}</span>
+          </div>
+          <div class="form-group">
+            <label for="address">Shipping Address</label>
+            <select id="address" formControlName="address" *ngIf="data.addresses && data.addresses.length > 0">
+              <option *ngFor="let address of data.addresses" [value]="address.id">
+                {{address.street}}, {{address.city}}, {{address.country}}
+              </option>
+            </select>
+            <p *ngIf="!(data.addresses && data.addresses.length > 0)" class="no-address">
+              No addresses available. Please add one in your profile.
+            </p>
+          </div>
+        </div>
+
+        <div class="payout-breakdown" *ngIf="askForm.value.price && data.sellingFee && data.shippingFee?.message">
+          <div class="breakdown-row">
+            <span>Your Ask Amount</span>
+            <span>{{askForm.value.price}}€</span>
+          </div>
+          <div class="breakdown-row">
+            <span>{{data.sellingFee.description}} ({{data.sellingFee.percentage}}%)</span>
+            <span>- {{(askForm.value.price * (data.sellingFee.percentage / 100)) | currency:'EUR':'symbol':'1.2-2'}}</span>
+          </div>
+          <div class="breakdown-row">
+            <span>Shipping Fee</span>
+            <span>- {{(data.shippingFee?.message || '0')}}€</span>
+          </div>
+          <div class="breakdown-row total">
+            <span>Total Payout</span>
+            <span>
+              {{calculateTotalPayoutDisplay(askForm.value.price, data.sellingFee.percentage, data.shippingFee?.message || '0')}}€
+            </span>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" 
+                  [disabled]="askForm.invalid || !(data.addresses && data.addresses.length) || totalPayout <= 0" 
+                  class="create-button">
+            {{buttonMessage}}
+          </button>
+        </div>
+
+        <div class="error-message" *ngIf="errorMessage">
+          {{errorMessage}}
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<ng-template #loadingTemplate>
+  <app-loading-screen>
+  </app-loading-screen>
+</ng-template>

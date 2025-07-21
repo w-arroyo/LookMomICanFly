@@ -1,0 +1,90 @@
+/* Mantenemos exactamente los mismos estilos que teníamos para esta sección */
+.profile-info {
+    background-color: #f5f5f5;
+    padding: 30px 40px; 
+    border-radius: 4px;
+    margin-top: -10px; 
+  }
+  
+  .profile-title {
+    font-size: 24px;
+    color: #212121;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 1px;
+    position: relative;
+    top: -10px; 
+  }
+  
+  .profile-details {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .detail-row {
+    display: flex;
+    align-items: center;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #f5f5f5;
+    
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+  
+  .detail-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #755540;
+    width: 180px; 
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    flex-shrink: 0; 
+  }
+  
+  .detail-value {
+    font-size: 16px;
+    color: #212121;
+    flex: 1;
+    padding-left: 20px; 
+  }
+  
+  /* Media queries para mantener la responsividad */
+  @media (max-width: 992px) {
+    .profile-info {
+      margin-top: 0;
+    }
+  
+    .profile-title {
+      top: 0;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .profile-info {
+      padding: 20px 25px;
+    }
+    
+    .detail-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 5px;
+    }
+    
+    .detail-label {
+      width: 100%;
+    }
+  
+    .detail-value {
+      padding-left: 0;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .profile-title {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+  }

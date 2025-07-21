@@ -1,0 +1,79 @@
+<ng-container *ngIf="bid$ | async as bidDetails">
+    <div class="bid-details-container" *ngIf="bidDetails">
+        <div class="product-header">
+          <h1>BID DETAILS:</h1>
+        </div>
+      
+        <div class="bid-content">
+          <div class="product-image-container">
+            <img [src]="getProductImage(bidDetails.productSummaryDTO.name)" 
+                 [alt]="bidDetails.productSummaryDTO.name" 
+                 class="product-image">
+          </div>
+      
+          <div class="details-container">
+            <div class="price-section">
+              <div class="price-info-row">
+                <span>Bid Price:</span>
+                <span class="price-value">{{bidDetails.amount}}€</span>
+              </div>
+            </div>
+      
+            <div class="fees-section">
+              <div class="breakdown-row">
+                <span>Operating Fee</span>
+                <span>{{bidDetails.operatingFee | currency:'EUR':'symbol':'1.2-2'}}</span>
+              </div>
+              <div class="breakdown-row">
+                <span>Shipping Option</span>
+                <span>{{bidDetails.shippingOptionDTO.name}} ({{bidDetails.shippingOptionDTO.companyName}})</span>
+              </div>
+              <div class="breakdown-row">
+                <span>Shipping Cost</span>
+                <span>{{bidDetails.shippingOptionDTO.price}}€</span>
+              </div>
+              <div class="breakdown-row total">
+                <span>Total Amount</span>
+                <span>
+                  {{calculateTotalCost(bidDetails.amount, bidDetails.operatingFee, bidDetails.shippingOptionDTO.price) | currency:'EUR':'symbol':'1.2-2'}}
+                </span>
+              </div>
+            </div>
+      
+            <div class="shipping-info">
+              <h3>Shipping Information</h3>
+              <div class="info-row">
+                <span>Estimated Delivery:</span>
+                <span>{{bidDetails.shippingOptionDTO.estimatedTime}} after authentication.</span>
+              </div>
+              <div class="info-row">
+                <span>Address:</span>
+                <span>
+                  {{bidDetails.addressDTO.street}}, 
+                  {{bidDetails.addressDTO.city}}, 
+                  {{bidDetails.addressDTO.country}}
+                </span>
+              </div>
+            </div>
+      
+            <div class="product-info">
+              <h3>Product Details</h3>
+              <div class="info-row">
+                <span>Year:</span>
+                <span>{{bidDetails.productSummaryDTO.year}}</span>
+              </div>
+              <div class="info-row">
+                <span>Manufacturer:</span>
+                <span>{{bidDetails.productSummaryDTO.manufacturer}}</span>
+              </div>
+              <div class="info-row">
+                <span>Category:</span>
+                <span>{{bidDetails.productSummaryDTO.category}}</span>
+              </div>
+            </div>
+      
+            <button class="profile-button" routerLink="/account/profile">MY PROFILE</button>
+          </div>
+        </div>
+      </div>
+    </ng-container>

@@ -1,0 +1,115 @@
+.site-footer {
+    background-color: #F5F5F5;
+    color: #212121;
+    width: 100%;
+    position: relative; 
+    left: 0;
+    padding: 20px 0;
+    box-sizing: border-box;
+    margin-top: 0px; 
+  
+    .footer-container {
+      max-width: 100%; 
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  
+    .footer-left {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding-left: 20px;
+      }
+    
+      .email-box {
+        position: relative;
+        width: 250px;
+      }
+  
+    .conversation-text {
+      font-size: 1.1rem;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+      margin-left: 0;
+    }
+  
+    .email-input {
+        border: none;
+        border-bottom: 1px solid #212121;
+        width: 100%;
+        background: #F5F5F5;
+        padding: 5px 0;
+        font-size: 14px;
+        outline: none;
+        color: #212121;
+        
+        &::placeholder {
+          color: #212121;
+          opacity: 0.7;
+        }
+      }
+
+      .email-button {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #212121;
+        font-size: 16px;
+        padding: 0 5px;
+        
+        &:hover {
+          opacity: 0.7;
+        }
+      }
+  
+    .footer-right {
+      display: flex;
+      gap: 40px;
+      padding-right: 40px; 
+    }
+  
+    .footer-link {
+      color: #212121;
+      text-decoration: none;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      white-space: nowrap;
+      transition: opacity 0.3s ease;
+  
+      &:hover {
+        opacity: 0.7;
+        text-decoration: underline;
+      }
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .site-footer {
+      padding: 15px 0;
+      
+      .footer-container {
+        flex-direction: column;
+        gap: 15px;
+      }
+  
+      .footer-left, .footer-right {
+        width: 100%;
+        justify-content: center;
+        padding: 0 20px;
+      }
+  
+      .footer-right {
+        gap: 20px;
+      }
+  
+      .email-input {
+        width: 150px;
+      }
+    }
+  }

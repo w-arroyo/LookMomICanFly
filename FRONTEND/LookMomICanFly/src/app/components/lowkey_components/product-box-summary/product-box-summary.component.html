@@ -1,0 +1,9 @@
+<div class="product-box-summary">
+    <div class="product-image-container">
+      <img [src]="getProductImage()" [alt]="product.name" class="product-image">
+    </div>
+    <div class="product-info">
+      <h3 class="product-name">{{product.name}}</h3>
+      <div class="product-manufacturer">{{product.manufacturer.toUpperCase()}}</div>
+    </div>
+  </div>

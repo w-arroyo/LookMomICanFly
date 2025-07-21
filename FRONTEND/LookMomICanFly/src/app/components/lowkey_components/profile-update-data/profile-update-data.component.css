@@ -1,0 +1,247 @@
+.profile-info {
+  background-color: #f5f5f5;
+  padding: 30px 40px;
+  border-radius: 4px;
+  margin-top: -10px;
+}
+
+.profile-title {
+  font-size: 24px;
+  color: #212121;
+  margin-bottom: 30px;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 1px;
+  position: relative;
+  top: -10px;
+}
+
+.profile-details {
+  display: flex;
+  flex-direction: column;
+  gap: 30px; 
+}
+
+.detail-row {
+  display: flex;
+  align-items: flex-start; 
+  padding-bottom: 25px; 
+  border-bottom: 1px solid #f5f5f5;
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+}
+
+.email-section {
+  padding-top: 10px;
+}
+
+.password-section {
+  padding-top: 15px;
+}
+
+.delete-account-section {
+  padding-top: 20px;
+  margin-top: 10px;
+}
+
+.detail-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #755540;
+  width: 180px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+  padding-top: 5px; 
+}
+
+.account-container {
+  flex: 1;
+}
+
+.account-display {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+.detail-value {
+  font-size: 16px;
+  color: #212121;
+  flex: 1;
+  
+  &.warning-text {
+    color: #ED1C24;
+    font-weight: 500;
+    margin-top: -9px;
+  }
+}
+
+.account-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.edit-button,
+.save-button,
+.cancel-button,
+.delete-button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+
+.edit-button {
+  background-color: #755540;
+  color: #f5f5f5;
+  margin-left: 20px;
+
+  &:hover {
+    background-color: darken(#755540, 10%);
+  }
+}
+
+.delete-button {
+  background-color: #ED1C24;
+  color: #f5f5f5;
+
+  &:hover {
+    background-color: darken(#ED1C24, 10%);
+  }
+}
+
+.account-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.email-input-container,
+.password-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.email-input,
+.password-input {
+  padding: 8px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 16px;
+  width: 100%;
+
+  &:focus {
+    outline: none;
+    border-color: #755540;
+  }
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.save-button {
+  background-color: #755540;
+  color: #f5f5f5;
+
+  &:hover {
+    background-color: darken(#755540, 10%);
+  }
+}
+
+.cancel-button {
+  background-color: transparent;
+  color: #212121;
+  border: 1px solid #e0e0e0;
+
+  &:hover {
+    background-color: #f5f5f5;
+  }
+}
+
+.error-message {
+  color: #ED1C24;
+  font-size: 14px;
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid #e0e0e0;
+}
+
+@media (max-width: 992px) {
+  .profile-info {
+    margin-top: 0;
+  }
+
+  .profile-title {
+    top: 0;
+  }
+
+  .account-display {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .account-buttons {
+    width: 100%;
+  }
+
+  .edit-button,
+  .delete-button {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-info {
+    padding: 20px 25px;
+  }
+
+  .profile-details {
+    gap: 25px;
+  }
+
+  .detail-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .detail-label {
+    width: 100%;
+  }
+
+  .email-input-container,
+  .password-input-container {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-title {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .save-button,
+  .cancel-button {
+    width: 100%;
+  }
+}

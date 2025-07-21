@@ -1,0 +1,67 @@
+<header class="header" [class.expanded]="isExpanded" [style.height.px]="headerHeight">
+  <nav class="nav-container">
+    <div class="nav-section left-section">
+      <div class="main-nav-items">
+        <div class="products-container" 
+     (mouseenter)="expandCategories()" 
+     (mouseleave)="collapseHeader()">
+  <span class="nav-item" (click)="redirectToProducts()">PRODUCTS</span>
+  <div class="categories-dropdown" *ngIf="showCategories">
+    <div class="dropdown-content">
+      <h3 class="dropdown-title">CATEGORIES</h3>
+      <div class="dropdown-items">
+
+      <ng-container *ngIf="categories$ | async as categories">
+        <a class="dropdown-item" *ngFor="let category of categories" (click)="redirectToCategory(category)">{{category}}</a>
+      </ng-container>
+
+      </div>
+    </div>
+  </div>
+</div>
+        <span class="nav-item best-sellers" (click)="redirectToBestSellers()">BEST SELLERS</span>
+      </div>
+    </div>
+
+    <div class="logo-container" (click)="redirectHome()">
+      <img src="logo.png" alt="Logo" class="logo">
+    </div>
+
+    <div class="nav-section right-section">
+      <div class="nav-right">
+        <div class="search-container" 
+             (mouseenter)="expandSearch()" 
+             (mouseleave)="collapseHeader()">
+          <span class="nav-item">SEARCH</span>
+          <div class="search-box" *ngIf="searchActive">
+            <input type="text" class="search-input" [(ngModel)]="search">
+            <button class="search-button" (click)="searchItems()">➔</button>
+          </div>
+        </div>
+        
+        <div class="account-container"
+          (mouseenter)="expandAccount()"
+          (mouseleave)="collapseHeader()">
+          <span class="nav-item">ACCOUNT</span>
+          <div class="account-dropdown" *ngIf="accountActive">
+            
+              <div class="dropdown-items" *ngIf="isLogged$ | async; else unlogged">
+                <a class="dropdown-item" routerLink="/account/profile/my-profile">PROFILE</a>
+                <a class="dropdown-item" (click)="logout()">LOG OUT</a>
+              </div>
+            
+
+            <ng-template #unlogged>
+              <div class="dropdown-items">
+                <a class="dropdown-item" routerLink="/authentication/login">LOGIN</a>
+                <a class="dropdown-item" routerLink="/authentication/create-account">SIGN UP</a>
+              </div>
+            </ng-template>
+
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </nav>
+</header>

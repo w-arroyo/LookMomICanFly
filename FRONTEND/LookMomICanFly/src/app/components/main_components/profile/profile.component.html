@@ -1,0 +1,49 @@
+<div class="profile-container">
+  <div class="profile-menu">
+
+    <button class="menu-item" 
+            [class.active]="isActive('profile')" 
+            [routerLink]="['my-profile']"
+            (click)="selectSection('profile')">PROFILE</button>
+
+    <button class="menu-item" 
+            [class.active]="isActive('addresses')" 
+            [routerLink]="['addresses']"
+            (click)="selectSection('addresses')">ADDRESSES</button>
+
+    <button class="menu-item" 
+            [class.active]="isActive('bank-account')" 
+            [routerLink]="['bank-account']"
+            (click)="selectSection('bank-account')">BANK ACCOUNT</button>
+
+    <button class="menu-item" 
+            [class.active]="isActive('phone-number')" 
+            [routerLink]="['phone-number']"
+            (click)="selectSection('phone-number')">PHONE NUMBER</button>
+
+    <button class="menu-item" 
+            [class.active]="isActive('buying')" 
+            [routerLink]="['buying']"
+            (click)="selectSection('buying')">BUYING</button>
+
+    <button class="menu-item" 
+            [class.active]="isActive('selling')" 
+            [routerLink]="['selling']"
+            (click)="selectSection('selling')">SELLING</button>
+
+    <button class="menu-item" 
+            [class.active]="isActive('liking')" 
+            [routerLink]="['liking']"
+            (click)="selectSection('liking')">LIKING</button>
+
+    <button class="menu-item" 
+            [class.active]="isActive('update')" 
+            [routerLink]="['update']"
+            (click)="selectSection('update')">UPDATE PROFILE</button>
+    <button class="menu-item logout" (click)="logout()">LOGOUT</button>
+  </div>
+
+  <div class="profile-content">
+    <router-outlet></router-outlet>
+  </div>
+</div>

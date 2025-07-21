@@ -1,0 +1,78 @@
+<ng-container *ngIf="product$ | async as product">
+<div class="payment-container">
+    <div class="payment-header">
+      <h1 class="payment-title">Complete Your Bid</h1>
+    </div>
+  
+    <div class="payment-content">
+      <div class="payment-image-container">
+        <img [src]="getImage(product.name)" [alt]="product.name" class="payment-image">
+      </div>
+  
+      <div class="payment-form-container">
+        <div *ngIf="!paymentSuccess; else successTemplate">
+          <div class="payment-summary">
+            <div class="summary-row">
+              <span class="summary-label">Product:</span>
+              <span class="summary-value">{{product.name}}</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-label">Size:</span>
+              <span class="summary-value">{{bid.size}}</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-label">Price:</span>
+              <span class="summary-value">{{bid.amount}}€</span>
+            </div>
+            <ng-container *ngIf="operationalFee$ | async as operationalFee">
+            <div class="summary-row">
+              <span class="summary-label">Operational Fee:</span>
+              <span class="summary-value">{{operationalFee.message}}€</span>
+            </div>
+            </ng-container>
+            <ng-container *ngIf="shippingPrice$ | async as shippingPrice">
+            <div class="summary-row">
+              <span class="summary-label">Shipping:</span>
+              <span class="summary-value">{{shippingPrice.message}}€</span>
+            </div>
+        </ng-container>
+          </div>
+          
+          <div class="payment-total">
+            <div class="total-row">
+              <span class="total-label">Total Amount:</span>
+              <span class="total-value">{{totalAmount}}€</span>
+            </div>
+          </div>
+  
+          <div class="payment-method">
+            <label class="payment-method-label">Payment Method</label>
+            <div id="card-element" class="stripe-card-element"></div>
+          </div>
+  
+          <div class="payment-actions">
+            <button type="button" (click)="submitPayment()" 
+                    [disabled]="loading" 
+                    class="payment-button">
+              <span *ngIf="!loading">Authorize payment</span>
+              <span *ngIf="loading" class="payment-loading">Processing authorization...</span>
+            </button>
+          </div>
+  
+          <div *ngIf="errorMessage" class="payment-error">
+            {{errorMessage}}
+          </div>
+        </div>
+  
+        <ng-template #successTemplate>
+          <div class="payment-success">
+            <h2 class="success-title">Payment Completed Successfully!</h2>
+            <p class="success-message">We have processed your payment of <span class="success-amount">{{totalAmount}}€</span>.</p>
+            <p class="success-details">You will receive an email with your purchase details.</p>
+            <button class="payment-button success-button" routerLink="/">Return to Home</button>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</ng-container>

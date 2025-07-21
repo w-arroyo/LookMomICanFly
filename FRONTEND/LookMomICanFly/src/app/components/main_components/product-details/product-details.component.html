@@ -1,0 +1,108 @@
+<div class="product-detail-container" *ngIf="product$ | async as product; else loading">
+ <ng-container *ngIf="!product.active">
+    <div class="inactive-product-message">
+      <p>This product is no longer available</p>
+      <button class="return-button" (click)="goToHomeScreen()">Return to Home</button>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="product.active">
+    <div class="breadcrumbs">
+      <span class="breadcrumb"> {{product.category}} </span>
+      <span class="separator">/</span>
+      <span class="breadcrumb current"> {{product.name.toUpperCase()}}</span>
+    </div>
+
+    <div class="product-content">
+      <div class="product-image-container">
+        <img [src]="getProductImage(product.name)" [alt]="product.name" class="product-image">
+      </div>
+
+      <div class="product-info">
+        <div class="product-header">
+          <h1 class="product-name">{{product.name}}</h1>
+          <button class="like-button" (click)="toggleLike()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" 
+                 [attr.stroke]="(isLiked$ | async) ? '#ff0000' : '#212121'" 
+                 [attr.fill]="(isLiked$ | async) ? '#ff0000' : 'none'"
+                 stroke-width="2">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="product-manufacturer">{{product.manufacturer.toUpperCase()}}</div>
+        <div class="product-year">Released: {{product.releaseYear}}</div>
+        <div class="product-reference">{{ getProductField(product) }}</div>
+        <div class="color-options" *ngIf="product.colors && product.colors.length > 0">
+          <label class="color-label">COLORS: {{product.colors[0]}} / {{product.colors[1]}}</label>
+          <div class="color-selection">
+            <div *ngFor="let color of product.colors" 
+                 class="color-option" 
+                 [style.background-color]="color.toLowerCase()"
+                 [title]="color">
+            </div>
+          </div>
+        </div>
+
+        <app-post-table [productId]="product.id"></app-post-table>
+        <!--
+        <div class="price-info-container" *ngIf="postService.selectedSize$ | async as selectedSize">
+          <div class="price-info-row">
+            <span class="price-info-label">LOWEST ASK:</span>
+            <span class="price-info-value">
+              {{ ((productPostDetails$ | async)?.[0] | async)?.message ? (((productPostDetails$ | async)?.[0] | async)?.message | currency:'EUR':'symbol':'1.2-2') : '-' }}
+            </span>
+          </div>
+          <div class="price-info-row">
+            <span class="price-info-label">HIGHEST BID:</span>
+            <span class="price-info-value">
+              {{ ((productPostDetails$ | async)?.[1] | async)?.message ? (((productPostDetails$ | async)?.[1] | async)?.message | currency:'EUR':'symbol':'1.2-2') : '-' }}
+            </span>
+          </div>
+          <div class="price-info-row">
+            <span class="price-info-label">LAST SALE:</span>
+            <span class="price-info-value">
+              {{ ((productPostDetails$ | async)?.[2] | async)?.message ? (((productPostDetails$ | async)?.[2] | async)?.message | currency:'EUR':'symbol':'1.2-2') : '-' }}
+            </span>
+          </div>
+        </div>
+        --->
+        <div class="action-buttons" *ngIf="postService.selectedSize$ | async as selectedSize">
+          <button class="buy-button" (click)="createBid(selectedSize)">BUY / BID</button>
+          <button class="sell-button" (click)="createAsk(selectedSize)">SELL / ASK</button>
+        </div>
+
+        <div class="product-tabs">
+          <button class="tab-button" 
+                  [class.active]="activeTab === 'details'"
+                  (click)="activeTab = 'details'">
+            Details
+          </button>
+          <button class="tab-button" 
+                  [class.active]="activeTab === 'help'"
+                  (click)="activeTab = 'help'">
+            Need Help?
+          </button>
+        </div>
+        
+        <div class="tab-content">
+          <div *ngIf="activeTab === 'details'" class="tab-pane">
+            <p>All products are guaranteed authentic, new, unworn and delivered in its original box.</p>
+          </div>
+          
+          <div *ngIf="activeTab === 'help'" class="tab-pane">
+            <p>For any assistance contact our customer support team at admin_montoya&#64;lookmomicanfly.com.</p>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<ng-template #loading>
+  <app-loading-screen>
+  </app-loading-screen>
+</ng-template>

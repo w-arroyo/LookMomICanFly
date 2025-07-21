@@ -1,0 +1,62 @@
+<div class="profile-info">
+    <h2 class="profile-title">PHONE NUMBER</h2>
+  
+    <div class="profile-details">
+      <div class="detail-row">
+        <span class="detail-label">Phone Number:</span>
+        <div class="account-container">
+          <ng-container *ngIf="!(isEditing || isCreating)">
+            <ng-container *ngIf="phoneNumber$ | async as phoneNumber; else noPhoneNumber">
+              <div class="account-display">
+                <span class="detail-value">{{phoneNumber.prefix}} {{phoneNumber.number}}</span>
+                <div class="account-buttons">
+                  <button class="edit-button" (click)="startEditing(phoneNumber)">Edit</button>
+                  <button class="delete-button" (click)="deletePhoneNumber()">Delete</button>
+                </div>
+              </div>
+            </ng-container>
+            
+            <ng-template #noPhoneNumber>
+              <span class="detail-value">No phone number registered</span>
+              <button class="edit-button" (click)="startCreating()">Add Phone Number</button>
+            </ng-template>
+          </ng-container>
+  
+          <form *ngIf="isEditing || isCreating" (ngSubmit)="savePhoneNumber()" class="account-form">
+            <div class="phone-input-container">
+              <select 
+                [(ngModel)]="editedPhonePrefix" 
+                name="phonePrefix"
+                class="prefix-select"
+                required>
+                <option value="" disabled selected>Select prefix</option>
+                <option *ngFor="let prefix of phonePrefixes$ | async" [value]="prefix.prefix">
+                  {{prefix.prefix}}
+                </option>
+              </select>
+              
+              <input 
+                type="tel" 
+                [(ngModel)]="editedPhoneNumber" 
+                name="phoneNumber"
+                class="phone-input"
+                placeholder="923 000 000"
+                required>
+            </div>
+            
+            <div class="form-actions">
+              <button type="submit" class="save-button">Save</button>
+              <button 
+                type="button" 
+                class="cancel-button" 
+                (click)="cancelEditing()">
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  
+    <p class="error-message" *ngIf="errorMessage">{{errorMessage}}</p>
+  </div>

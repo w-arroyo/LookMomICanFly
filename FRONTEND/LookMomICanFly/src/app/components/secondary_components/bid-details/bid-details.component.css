@@ -1,0 +1,139 @@
+.bid-details-container {
+    max-width: 1200px;
+    margin: 70px auto 0 auto;
+    padding: 20px;
+    min-height: 530px;
+  }
+  
+  .product-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .product-header h1 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #212121;
+    text-transform: uppercase;
+    margin: 0;
+  }
+  
+  .size-label {
+    font-size: 16px;
+    color: #755540;
+    font-weight: 500;
+  }
+  
+  .bid-content {
+    display: flex;
+    gap: 40px;
+  }
+  
+  .product-image-container {
+    margin-top: 20px;
+    flex: 0 0 50%;
+    max-width: 50%;
+    padding-left: 0;
+  }
+  
+  .product-image {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    max-height: 500px;
+  }
+  
+  .details-container {
+    flex: 1;
+    max-width: 500px;
+    margin-top: 20px;
+  }
+  
+  .price-section {
+    margin-bottom: 20px;
+  }
+  
+  .price-info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+  
+  .price-value {
+    font-size: 20px;
+    font-weight: 600;
+    color: #31355B;
+  }
+  
+  .fees-section {
+    margin: 25px 0;
+    padding: 0px;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+  }
+  
+  .breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  
+  .breakdown-row.total {
+    font-weight: 600;
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
+  }
+  
+  .shipping-info, .product-info {
+    margin: 30px 0;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f5f5f5;
+  }
+  
+  .shipping-info h3, .product-info h3 {
+    font-size: 18px;
+    color: #31355B;
+    margin-bottom: 15px;
+  }
+  
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+  
+  .profile-button {
+    width: 100%;
+    padding: 15px;
+    background-color: #31355B;
+    color: #F8C1E1;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: -15px;
+    text-transform: uppercase;
+  }
+  
+  .profile-button:hover {
+    background-color: #212121;
+    color: #f5f5f5;
+  }
+  
+  @media (max-width: 768px) {
+    .bid-content {
+      flex-direction: column;
+    }
+    
+    .product-image-container,
+    .details-container {
+      max-width: 100%;
+    }
+  }

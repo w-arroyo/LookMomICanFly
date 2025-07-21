@@ -1,0 +1,30 @@
+# builds angular app
+FROM node:20 AS build
+
+#sets the directory inside the container
+WORKDIR /app
+
+# copies all frontend files to avoid reinstalling them every time there's a change
+COPY package*.json ./
+
+# installs dependencies
+RUN npm install
+
+COPY . .
+# generates build in /dist
+RUN npm run build
+
+# uses ngnix as server
+FROM nginx:stable-alpine
+
+# removes nginx default config 
+RUN rm -rf /usr/share/nginx/html/*
+
+# copies all the generated content to the ngnix directory
+COPY --from=build /app/dist/look-mom-ican-fly/browser/ /usr/share/nginx/html/
+
+# modifies the default ngnix conf with the one created in ngnix.conf in the frontend directory
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# opens ngnix port (usually server 80)
+EXPOSE 80

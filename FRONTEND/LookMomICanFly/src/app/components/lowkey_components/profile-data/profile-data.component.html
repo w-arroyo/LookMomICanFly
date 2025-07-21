@@ -1,0 +1,25 @@
+<div class="profile-info">
+    <h2 class="profile-title">PROFILE</h2>
+    <ng-container *ngIf="profileData$ | async as profileData ">
+      <div class="profile-details">
+        <div class="detail-row">
+          <span class="detail-label">Full Name:</span>
+          <span class="detail-value">{{profileData.name}}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Member Since:</span>
+          <span class="detail-value">{{profileData.registrationDate}}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Selling Level:</span>
+          <ng-container *ngIf="userLevel$ | async as userLevel">
+            <span class="detail-value">{{userLevel.description}} ({{userLevel.percentage}}%)</span>
+          </ng-container>          
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Email:</span>
+          <span class="detail-value">{{profileData.email}}</span>
+        </div>
+      </div>
+    </ng-container>
+  </div>

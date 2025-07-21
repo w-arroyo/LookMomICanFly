@@ -1,0 +1,61 @@
+<div class="product-list-container"  *ngIf="productList$ | async as products; else loading">
+  <ng-container *ngIf="productList$ | async as products">
+    <div class="filter-button-container" *ngIf="products.length > 0">
+      <button class="filter-toggle" (click)="activateFilterComponent()">
+        <span class="filter-icon">☰</span> FILTER
+      </button>
+    </div>
+  </ng-container>
+
+  <div class="product-list">
+    <ng-container *ngIf="currentShownProducts$ | async as products">
+      <ng-container *ngIf="products.length > 0; else noProducts">
+        <app-product-summary-details
+          *ngFor="let product of products" 
+          [productSummary]="product"
+          (click)="goToProduct(product.id,product.category)">
+        </app-product-summary-details>
+      </ng-container>
+      <ng-template #noProducts>
+        <div class="no-products-message">
+          NO PRODUCTS WERE FOUND
+        </div>
+      </ng-template>
+    </ng-container>
+  </div>
+
+  <button class="scroll-to-top" *ngIf="showScrollButton" (click)="scrollToTop()">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <ng-container *ngIf="productList$ | async as products">
+    <app-filter-products *ngIf="products.length > 0"></app-filter-products>
+  </ng-container>
+
+  <ng-container *ngIf="productList$ | async as products">
+    <div class="pagination-container"*ngIf="products.length > 0">
+      <button class="pagination-button pagination-prev" *ngIf="currentPage>1" (click)="previousPage()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#212121" stroke-width="2">
+          <path d="M15 18l-6-6 6-6"/>
+        </svg>
+      </button>
+      
+      <div class="pagination-pages">
+        <span class="pagination-page active">{{currentPage}}</span>
+      </div>
+      
+      <button class="pagination-button pagination-next" *ngIf="currentPage<maxPages" (click)="nextPage()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#212121" stroke-width="2">
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
+      </button>
+    </div>
+  </ng-container>
+</div>
+
+<ng-template #loading>
+  <app-loading-screen>
+  </app-loading-screen>
+</ng-template>

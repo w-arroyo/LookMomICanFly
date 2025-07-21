@@ -1,0 +1,61 @@
+<div class="filter-overlay" *ngIf="isOpen" (click)="closeFilterEvent()"></div>
+
+<div class="filter-container" [class.open]="isOpen">
+  <div class="filter-header">
+    <h2>FILTER PRODUCTS</h2>
+    <button class="close-btn" (click)="closeFilterEvent()">&times;</button>
+  </div>
+  
+  <div class="filter-content" [formGroup]="filterForm">
+    <div class="filter-scroll-container">
+      <div class="filter-section" *ngIf="category">
+        <h3>SUBCATEGORY</h3>
+        <div class="filter-options" formArrayName="subcategories">
+          <label *ngFor="let subcategory of subcategories; let index=index">
+            <input type="checkbox" [formControlName]="index" (change)="preventScrollJump()"> 
+            <span class="custom-checkbox"></span>
+            {{subcategory}}
+          </label>
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <h3>RELEASE DATE</h3>
+        <div class="filter-options" formArrayName="years">
+          <label *ngFor="let year of yearList; let index=index">
+            <input type="checkbox" [formControlName]="index" (change)="preventScrollJump()"> 
+            <span class="custom-checkbox"></span>
+            {{year}}
+          </label>
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <h3>MANUFACTURER</h3>
+        <div class="filter-options" formArrayName="manufacturers">
+          <label *ngFor="let manufacturer of manufacturers; let index=index">
+            <input type="checkbox" [formControlName]="index" (change)="preventScrollJump()"> 
+            <span class="custom-checkbox"></span>
+            {{manufacturer}}
+          </label>
+        </div>
+      </div>
+      
+      <div class="filter-section">
+        <h3>COLOR</h3>
+        <div class="filter-options" formArrayName="colors">
+          <label *ngFor="let color of colors; let index=index">
+            <input type="checkbox" [formControlName]="index" (change)="preventScrollJump()">
+            <span class="custom-checkbox"></span>
+            {{color}}
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="filter-footer">
+    <button class="clear-btn" (click)="clearSelection()">CLEAR</button>
+    <button class="apply-btn" (click)="applyFilters()">FILTER</button>
+  </div>
+</div>

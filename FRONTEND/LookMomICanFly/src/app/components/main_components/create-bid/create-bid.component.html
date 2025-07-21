@@ -1,0 +1,110 @@
+<div class="create-ask-container" *ngIf="{
+    product: product$ | async,
+    lowestAsk: lowestAsk$ | async,
+    highestBid: highestBid$ | async,
+    addresses: addresses$ | async,
+    shippingOptions: shippingOptions$ | async,
+    operationalFee: operationalFee$ | async
+  } as data; else loadingTemplate">
+  
+    <div class="product-header">
+      <h1>{{data.product?.name}}</h1>
+      <span class="size-label">Size: {{size}}</span>
+    </div>
+  
+    <div class="ask-content">
+      <div class="product-image-container">
+        <img [src]="getImage(data.product?.name)" [alt]="data.product?.name" class="product-image">
+      </div>
+  
+      <div class="ask-form-container">
+        <form [formGroup]="bidForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="amount">Your Bid Amount (€)</label>
+            <input type="number" id="amount" formControlName="amount" 
+                   (blur)="adjustAmountToLowestAsk(data.lowestAsk?.message || '0')"
+                   step="1" min="1">
+          </div>
+  
+          <div class="price-info">
+            <div class="price-info-row">
+              <span>Lowest Ask:</span>
+              <span>{{(data.lowestAsk?.message || '')}}€</span>
+            </div>
+            <div class="price-info-row">
+              <span>Highest Bid:</span>
+              <span>{{(data.highestBid?.message || '')}}€</span>
+            </div>
+          </div>
+  
+          <div class="user-info">
+            <div class="form-group">
+              <label for="address">Shipping Address</label>
+              <select id="address" formControlName="address" *ngIf="data.addresses && data.addresses.length > 0">
+                <option *ngFor="let address of data.addresses" [value]="address.id">
+                  {{address.street}}, {{address.city}}, {{address.country}}
+                </option>
+              </select>
+              <p *ngIf="!(data.addresses && data.addresses.length > 0)" class="no-address">
+                No addresses available. Please add one in your profile.
+              </p>
+            </div>
+  
+            <div class="form-group">
+              <label for="shippingOption">Shipping Method</label>
+              <select id="shippingOption" formControlName="shippingOption" 
+                      (change)="updateShippingPrice(data.shippingOptions)"
+                      *ngIf="data.shippingOptions && data.shippingOptions.length > 0">
+                <option value="">Select shipping method</option>
+                <option *ngFor="let option of data.shippingOptions" [value]="option.id">
+                  {{option.name}} ({{option.companyName}}) - {{option.price}}€
+                </option>
+              </select>
+              <p *ngIf="!(data.shippingOptions && data.shippingOptions.length > 0)" class="no-address">
+                No shipping options available.
+              </p>
+            </div>
+            
+            <input type="hidden" formControlName="shippingPrice">
+          </div>
+  
+          <div class="payout-breakdown" *ngIf="bidForm.value.amount && data.operationalFee?.message && bidForm.value.shippingOption">
+            <div class="breakdown-row">
+              <span>Your Bid Amount</span>
+              <span>{{bidForm.value.amount}}€</span>
+            </div>
+            <div class="breakdown-row">
+              <span>Operational Fee</span>
+              <span>+ {{(data.operationalFee?.message || '0')}}€</span>
+            </div>
+            <div class="breakdown-row shipping">
+              <span>Shipping Cost</span>
+              <span>+ {{bidForm.value.shippingPrice}}€</span>
+            </div>
+            <div class="breakdown-row total">
+              <span>Total Amount</span>
+              <span>{{totalAmount}}€</span>
+            </div>
+          </div>
+  
+          <div class="form-actions">
+            <button type="submit" 
+                    [disabled]="bidForm.invalid || !(data.addresses && data.addresses.length) || !(data.shippingOptions && data.shippingOptions.length)" 
+                    class="create-button">
+              Place Bid
+            </button>
+          </div>
+  
+          <div class="error-message" *ngIf="errorMessage">
+            {{errorMessage}}
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <ng-template #loadingTemplate>
+    <div class="loading-spinner">
+      Loading...
+    </div>
+  </ng-template>

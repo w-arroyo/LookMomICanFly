@@ -1,0 +1,89 @@
+<div class="profile-info">
+    <h2 class="profile-title">UPDATE PROFILE</h2>
+    
+    <div class="profile-details">
+      <div class="detail-row email-section">
+        <span class="detail-label">Email:</span>
+        <div class="account-container">
+          <ng-container *ngIf="userData$ | async as userEmail">
+            <ng-container *ngIf="!isEditingEmail">
+              <div class="account-display">
+                <span class="detail-value">{{userEmail.email}}</span>
+                <div class="account-buttons">
+                  <button class="edit-button" (click)="startEmailEditing(userEmail.email)">Edit</button>
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
+  
+          <form *ngIf="isEditingEmail" (ngSubmit)="updateEmail()" class="account-form">
+            <div class="email-input-container">
+              <input 
+                type="email" 
+                [(ngModel)]="editedEmail" 
+                name="editedEmail"
+                class="email-input"
+                placeholder="your@email.com"
+                required>
+            </div>
+            
+            <div class="form-actions">
+              <button type="submit" class="save-button">Update</button>
+              <button 
+                type="button" 
+                class="cancel-button" 
+                (click)="cancelEmailEditing()">
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    
+      <div class="detail-row password-section">
+        <span class="detail-label">Password:</span>
+        <div class="account-container">
+          <form (ngSubmit)="updatePassword()" class="account-form">
+            <div class="password-input-container">
+              <input 
+                type="password" 
+                [(ngModel)]="currentPassword" 
+                name="currentPassword"
+                class="password-input"
+                placeholder="Current password"
+                required>
+              
+              <input 
+                type="password" 
+                [(ngModel)]="newPassword" 
+                name="newPassword"
+                class="password-input"
+                placeholder="New password"
+                required>
+            </div>
+            
+            <div class="form-actions">
+              <button type="submit" class="save-button">Update Password</button>
+            </div>
+          </form>
+        </div>
+      </div>
+  
+      <div class="detail-row delete-account-section">
+        <span class="detail-label">Delete Account:</span>
+        <div class="account-container">
+          <div class="account-display">
+            <span class="detail-value warning-text">This action cannot be undone</span>
+            <div class="account-buttons">
+              <button class="delete-button" (click)="deleteAccount()">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <p class="error-message" *ngIf="errorMessage">{{errorMessage}}</p>
+  </div>
+
+  <app-loading-screen *ngIf="loading">
+  </app-loading-screen>

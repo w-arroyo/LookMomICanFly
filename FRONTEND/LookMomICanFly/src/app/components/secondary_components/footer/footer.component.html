@@ -1,0 +1,17 @@
+<footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <span class="conversation-text">Stay up to date: </span>
+        <div class="email-box">
+            <input type="email" placeholder="EMAIL" class="email-input" [(ngModel)]="email">
+            <button class="email-button" (click)="send()">➔</button>
+          </div>
+      </div>
+      
+      <div class="footer-right">
+        <a routerLink="/contact" class="footer-link">CONTACT</a>
+        <a routerLink="/about-us" class="footer-link">ABOUT</a>
+        <a routerLink="/social" class="footer-link">SOCIAL</a>
+      </div>
+    </div>
+  </footer>

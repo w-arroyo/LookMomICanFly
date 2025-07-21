@@ -1,0 +1,79 @@
+<ng-container *ngIf="sale$ | async as saleDetails">
+    <div class="sale-details-container" *ngIf="saleDetails">
+      <div class="product-header">
+        <h1>SALE DETAILS:</h1>
+      </div>
+  
+      <div class="sale-content">
+        <div class="product-image-container">
+          <img [src]="getProductImage(saleDetails.product.name)" 
+               [alt]="saleDetails.product.name" 
+               class="product-image">
+        </div>
+  
+        <div class="details-container">
+          <div class="price-section">
+            <div class="price-info-row">
+              <span>Sale Price:</span>
+              <span class="price-value">{{saleDetails.amount}}€</span>
+            </div>
+            <div *ngIf="saleDetails.reference" class="price-info-row">
+              <span>Reference:</span>
+              <span>{{saleDetails.reference}}</span>
+            </div>
+            <div class="price-info-row">
+              <span>Status:</span>
+              <span class="status-value">{{saleDetails.status.status}}</span>
+            </div>
+            <div *ngIf="saleDetails.trackingNumber" class="price-info-row">
+              <span>Tracking Number:</span>
+              <span>{{saleDetails.trackingNumber}}</span>
+            </div>
+          </div>
+  
+          <div class="fees-section">
+            <div class="breakdown-row">
+              <span>Service Fee ({{saleDetails.percentage}}%)</span>
+              <span>- {{(saleDetails.amount * (saleDetails.percentage / 100)) | currency:'EUR':'symbol':'1.2-2'}}</span>
+            </div>
+            <div class="breakdown-row">
+              <span>Shipping Fee</span>
+              <span>- {{saleDetails.shippingFee}}€</span>
+            </div>
+            <div class="breakdown-row total">
+              <span>Total Payout</span>
+              <span>
+                {{calculateTotalPayout(saleDetails.amount, saleDetails.percentage, saleDetails.shippingFee) | currency:'EUR':'symbol':'1.2-2'}}
+              </span>
+            </div>
+          </div>
+  
+          <div class="shipping-info">
+            <h3>Shipping Information</h3>
+            <div class="info-row">
+              <span>Address:</span>
+              <span>
+                {{saleDetails.address.street}}, 
+                {{saleDetails.address.city}}, 
+                {{saleDetails.address.country}}
+              </span>
+            </div>
+          </div>
+  
+          <div class="product-info">
+            <h3>Product Details</h3>
+            <div class="info-row">
+              <span>Size:</span>
+              <span>{{saleDetails.size}}</span>
+            </div>
+            <div class="info-row">
+              <span>Manufacturer:</span>
+              <span>{{saleDetails.product.manufacturer}}</span>
+            </div>
+          </div>
+  
+          <button class="profile-button" routerLink="/account/profile">MY PROFILE</button>
+        </div>
+      </div>
+    </div>
+  </ng-container>

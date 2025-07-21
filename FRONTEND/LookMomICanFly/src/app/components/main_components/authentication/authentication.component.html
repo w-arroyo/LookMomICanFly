@@ -1,0 +1,58 @@
+<div class="auth-container">
+    <div class="auth-card">
+      <h1 class="auth-title">{{ isLoginMode ? 'LOGIN' : 'NEW ACCOUNT' }}</h1>
+      
+      <form class="auth-form">
+        <div class="form-group" *ngIf="!isLoginMode">
+          <input 
+            type="text" 
+            placeholder="Name" 
+            [(ngModel)]="registrationCredentials.name" 
+            name="name" 
+            required
+            class="form-input"
+            [class.input-error]="errorsExist"
+          >
+        </div>
+        
+        <div class="form-group">
+          <input 
+            type="email" 
+            placeholder="Email" 
+            [(ngModel)]="emailInput" 
+            name="email" 
+            required
+            class="form-input"
+            [class.input-error]="errorsExist"
+          >
+        </div>
+        
+        <div class="form-group">
+          <input 
+            type="password" 
+            placeholder="Password" 
+            [(ngModel)]="passwordInput" 
+            name="password" 
+            required
+            class="form-input"
+            [class.input-error]="errorsExist"
+          >
+        </div>
+  
+        <div *ngIf="errorsExist" class="error-message">
+          {{ errorMessage }}
+        </div>
+        
+        <button class="submit-button" (click)="authenticate()">
+          {{ isLoginMode ? 'LOGIN' : 'CREATE ACCOUNT' }}
+        </button>
+        
+        <button type="button" class="toggle-mode-button" (click)="switchMode()">
+          {{ isLoginMode ? 'CREATE ACCOUNT' : 'LOGIN' }}
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <app-loading-screen *ngIf="(loading$ | async)">
+  </app-loading-screen>

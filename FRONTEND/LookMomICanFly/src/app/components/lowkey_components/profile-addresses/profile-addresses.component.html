@@ -1,0 +1,102 @@
+<div class="profile-info">
+  <h2 class="profile-title">ADDRESSES</h2>
+  
+  <div class="profile-details">
+    <div class="detail-row" *ngIf="isAddingAddress">
+      <span class="detail-label">New Address:</span>
+      <div class="account-container">
+        <form (ngSubmit)="saveAddress()" class="account-form">
+          <div class="address-input-container">
+            <input 
+              type="text" 
+              [(ngModel)]="newAddress.fullName" 
+              name="fullName"
+              class="address-input"
+              placeholder="Full Name"
+              required>
+            
+            <input 
+              type="text" 
+              [(ngModel)]="newAddress.street" 
+              name="street"
+              class="address-input"
+              placeholder="Street and Number"
+              required>
+            
+            <input 
+              type="text" 
+              [(ngModel)]="newAddress.zipCode" 
+              name="zipCode"
+              class="address-input"
+              placeholder="Zip Code"
+              required>
+            
+            <input 
+              type="text" 
+              [(ngModel)]="newAddress.city" 
+              name="city"
+              class="address-input"
+              placeholder="City"
+              required>
+            
+            <input 
+              type="text" 
+              [(ngModel)]="newAddress.country" 
+              name="country"
+              class="address-input"
+              placeholder="Country"
+              required>
+          </div>
+          
+          <div class="form-actions">
+            <button type="submit" class="save-button">Save Address</button>
+            <button 
+              type="button" 
+              class="cancel-button" 
+              (click)="cancelAddAddress()">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  <p class="error-message" *ngIf="errorMessage">{{errorMessage}}</p>
+
+    <div class="detail-row add-address-section" *ngIf="!isAddingAddress">
+      <span class="detail-label">Add Address:</span>
+      <div class="account-container">
+        <div class="account-display">
+          <span class="add-address-text">Add a new shipping address</span>
+          <div class="account-buttons">
+            <button class="edit-button" (click)="openAddAddressForm()">
+              <span class="button-text">Add</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ng-container *ngIf="addresses$ | async as addresses">
+      <div *ngFor="let address of addresses; let i = index" class="detail-row address-section">
+        <span class="detail-label">Address {{i + 1}}:</span>
+        <div class="account-container">
+          <div class="account-display">
+            <div class="address-details">
+              <span class="detail-value">{{address.fullName}}</span>
+              <span class="detail-value">{{address.street}}</span>
+              <span class="detail-value">{{address.city}}, {{address.zipCode}}</span>
+              <span class="detail-value">{{address.country}}</span>
+            </div>
+            <div class="account-buttons">
+              <button class="delete-button" (click)="deleteAddress(address.id)">
+                <span class="button-text">Delete</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+</div>

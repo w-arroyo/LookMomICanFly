@@ -1,0 +1,10 @@
+<div class="carousel">
+  <a class="carousel-text">
+    <span class="underlined" routerLink="/products/all">SHOP</span>
+  </a>
+    <div *ngFor="let image of images; let i = index" 
+         class="slide" 
+         [class.active]="currentIndex === i">
+      <img [src]="image" [alt]="'Slide ' + (i + 1)">
+    </div>
+  </div>

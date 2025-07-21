@@ -1,0 +1,30 @@
+<div class="profile-info">
+    <h2 class="profile-title">{{section.toUpperCase()}}</h2>
+    
+    <div class="transaction-tabs">
+      <button 
+        class="tab-button" 
+        [class.active]="activeTab === 'active'"
+        (click)="activeTab = 'active'">
+        Active
+      </button>
+      <button 
+        class="tab-button" 
+        [class.active]="activeTab === 'pending'"
+        (click)="activeTab = 'pending'">
+        Pending
+      </button>
+      <button 
+        class="tab-button" 
+        [class.active]="activeTab === 'completed'"
+        (click)="activeTab = 'completed'">
+        Completed
+      </button>
+    </div>
+  
+    <div class="transaction-content">
+      <app-post-list *ngIf="activeTab === 'active'"></app-post-list>
+      <app-pending-transaction-list *ngIf="activeTab === 'pending'"></app-pending-transaction-list>
+      <app-completed-transaction-list *ngIf="activeTab === 'completed'"></app-completed-transaction-list>
+    </div>
+  </div>

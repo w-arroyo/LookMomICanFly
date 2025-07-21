@@ -1,0 +1,33 @@
+<div class="transaction-box-summary">
+  <app-product-box-summary [product]="transaction.product" (click)="goToProduct()"></app-product-box-summary>
+  
+  <div class="transaction-details">
+    <div class="detail" (click)="goToDetails()">
+      <span class="detail-label">Size:</span>
+      <span class="detail-value">{{transaction.size}}</span>
+    </div>
+    
+    <div class="detail" (click)="goToDetails()">
+      <span class="detail-label">Date:</span>
+      <span class="detail-value">{{transaction.date | date:'dd/MM/yyyy'}}</span>
+    </div>
+    
+    <div class="detail" (click)="goToDetails()">
+      <span class="detail-label">Price:</span>
+      <span class="detail-value">{{transaction.amount | currency:'EUR':'symbol':'1.2-2'}}</span>
+    </div>
+    
+    <div class="detail" (click)="goToDetails()">
+      <span class="detail-label">Status:</span>
+      <span class="detail-value">{{transaction.status}}</span>
+    </div>
+
+    <div class="action-buttons" *ngIf="transaction.status === 'PENDING'">
+      <button class="tracking-button" (click)="createTracking()">
+        New Tracking Number
+      </button>
+    </div>
+  </div>
+
+  <p class="error-message" *ngIf="errorMessage">{{errorMessage}}</p>
+</div>

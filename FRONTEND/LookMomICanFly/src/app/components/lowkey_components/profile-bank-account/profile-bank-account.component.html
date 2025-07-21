@@ -1,0 +1,47 @@
+<div class="profile-info">
+  <h2 class="profile-title">BANK ACCOUNT</h2>
+
+  <div class="profile-details">
+    <div class="detail-row">
+      <span class="detail-label">Bank Account:</span>
+      <div class="account-container">
+        <ng-container *ngIf="!(isEditing || isCreating)">
+          <ng-container *ngIf="bankAccount$ | async as bankAccount; else noAccount">
+            <div class="account-display">
+              <span class="detail-value">{{bankAccount.number}}</span>
+              <div class="account-buttons">
+                <button class="edit-button" (click)="startEditing(bankAccount)">Edit</button>
+                <button class="delete-button" (click)="deleteAccount()">Delete</button>
+              </div>
+            </div>
+          </ng-container>
+          
+          <ng-template #noAccount>
+            <span class="detail-value">No account registered</span>
+            <button class="edit-button" (click)="startCreating()">Create Account</button>
+          </ng-template>
+        </ng-container>
+
+        <form *ngIf="isEditing || isCreating" (ngSubmit)="saveAccount()" class="account-form">
+          <input 
+            type="text" 
+            [(ngModel)]="editedAccountNumber" 
+            name="accountNumber"
+            class="account-input"
+            placeholder="ES12 3456 7890 1234 5678 9012">
+          <div class="form-actions">
+            <button type="submit" class="save-button">Save</button>
+            <button 
+              type="button" 
+              class="cancel-button" 
+              (click)="cancelEditing()">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <p class="error-message" *ngIf="errorMessage">{{errorMessage}}</p>
+</div>

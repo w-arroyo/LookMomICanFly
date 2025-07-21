@@ -1,0 +1,44 @@
+<div class="post-box-summary">
+  <app-product-box-summary [product]="post.product" (click)="gotToProduct()"></app-product-box-summary>
+  
+  <div class="post-details">
+    <div class="detail-group" (click)="goToPost()">
+      <span class="detail-label">Size</span>
+      <span class="detail-value">{{post.size}}</span>
+    </div>
+    
+    <div class="amount-control">
+      <span class="detail-label">Amount</span>
+      <span class="detail-value" *ngIf="!isEditing">{{post.amount | currency:'EUR':'symbol':'1.2-2'}}</span>
+      <input 
+        type="number" 
+        [(ngModel)]="editedAmount" 
+        *ngIf="isEditing"
+        class="amount-input">
+    </div>
+    
+    <div class="button-group">
+      <button 
+        class="edit-button" 
+        (click)="onEdit()"
+        *ngIf="!isEditing">
+        Edit
+      </button>
+      
+      <div class="edit-actions" *ngIf="isEditing">
+        <button class="confirm-button" (click)="onSave()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 6L9 17l-5-5"/>
+          </svg>
+        </button>
+        <button class="cancel-button" (click)="onCancel()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <p class="error-message" *ngIf="errorMessage">{{errorMessage}}</p>
+  </div>
+</div>
+

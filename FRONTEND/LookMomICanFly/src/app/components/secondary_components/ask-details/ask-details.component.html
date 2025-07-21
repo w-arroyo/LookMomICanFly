@@ -1,0 +1,71 @@
+<ng-container *ngIf="ask$ | async as askDetails">
+<div class="ask-details-container" *ngIf="askDetails">
+    <div class="product-header">
+      <h1>ASK DETAILS:</h1>
+    </div>
+  
+    <div class="ask-content">
+      <div class="product-image-container">
+        <img [src]="getProductImage(askDetails.productSummaryDTO.name)" 
+             [alt]="askDetails.productSummaryDTO.name" 
+             class="product-image">
+      </div>
+  
+      <div class="details-container">
+        <div class="price-section">
+          <div class="price-info-row">
+            <span>Ask Price:</span>
+            <span class="price-value">{{askDetails.amount}}€</span>
+          </div>
+        </div>
+  
+        <div class="fees-section">
+          <div class="breakdown-row">
+            <span>{{askDetails.sellingFee.description}} ({{askDetails.sellingFee.percentage}}%)</span>
+            <span>- {{(askDetails.amount * (askDetails.sellingFee.percentage / 100)) | currency:'EUR':'symbol':'1.2-2'}}</span>
+          </div>
+          <div class="breakdown-row">
+            <span>Shipping Fee</span>
+            <span>- {{askDetails.shippingFee}}€</span>
+          </div>
+          <div class="breakdown-row total">
+            <span>Total Payout</span>
+            <span>
+              {{calculateTotalPayout(askDetails.amount, askDetails.sellingFee.percentage, askDetails.shippingFee) | currency:'EUR':'symbol':'1.2-2'}}
+            </span>
+          </div>
+        </div>
+  
+        <div class="shipping-info">
+          <h3>Shipping Information</h3>
+          <div class="info-row">
+            <span>Address:</span>
+            <span>
+              {{askDetails.addressDTO.street}}, 
+              {{askDetails.addressDTO.city}}, 
+              {{askDetails.addressDTO.country}}
+            </span>
+          </div>
+        </div>
+  
+        <div class="product-info">
+          <h3>Product Details</h3>
+          <div class="info-row">
+            <span>Year:</span>
+            <span>{{askDetails.productSummaryDTO.year}}</span>
+          </div>
+          <div class="info-row">
+            <span>Manufacturer:</span>
+            <span>{{askDetails.productSummaryDTO.manufacturer}}</span>
+          </div>
+          <div class="info-row">
+            <span>Category:</span>
+            <span>{{askDetails.productSummaryDTO.category}}</span>
+          </div>
+        </div>
+  
+        <button class="profile-button" routerLink="/account/profile">MY PROFILE</button>
+      </div>
+    </div>
+  </div>
+</ng-container>

@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345
+      MYSQL_DATABASE: lookmomicanfly
+    volumes:
+      - mysql-lookmomicanfly-data:/var/lib/mysql
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: ../BACKEND/lookmomicanfly
+      dockerfile: Dockerfile-Backend
+    container_name: backend
+    depends_on:
+      - mysql
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/lookmomicanfly?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 12345
+    restart: on-failure
+    networks:
+      - app-network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    depends_on:
+      - mysql
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: 12345
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ../FRONTEND/LookMomICanFly
+      dockerfile: Dockerfile-Frontend
+    ports:
+      - 4200:80
+    depends_on:
+      - backend
+    networks:
+      - app-network
+  
+  script:
+    build:
+      context: ../SCRIPT/LookMomICanFly_Transaction Status Updater
+      dockerfile: Dockerfile-Script
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+
+volumes:
+  mysql-lookmomicanfly-data:
+
+networks:
+  app-network:

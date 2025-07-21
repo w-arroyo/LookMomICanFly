@@ -1,0 +1,19 @@
+<app-loading-screen *ngIf="loading$ | async; else content"></app-loading-screen>
+
+<ng-template #content>
+  <div class="post-list">
+    <p class="status-message {{messageType}}" *ngIf="statusMessage">{{statusMessage}}</p>
+    
+    <div *ngFor="let post of (posts$ | async) || []">
+      <app-post-box-summary 
+        [post]="post"
+        [sectionParam]="sectionParam"
+        (edit)="changeAmount($event)">
+      </app-post-box-summary>
+    </div>
+    
+    <p class="no-posts" *ngIf="(posts$ | async)?.length === 0">
+      No active {{sectionParam}} posts
+    </p>
+  </div>
+</ng-template>
