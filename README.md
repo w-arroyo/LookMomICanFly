@@ -20,10 +20,13 @@
 - **Flyway** — Manages all version-controlled SQL database migrations, ensuring consistency.
 - **Gradle** — Used as the project's build tool, optimized for performance and continuous delivery.
 - **Spring Security + JWT** — Implements secure user authentication, role-based access control, and token-based session handling.
+- **SonarQube** — All backend code passed Sonar's Quality Gates, ensuring code quality, maintainability, and zero critical bugs. [Check here the analysis.](https://sonarcloud.io/project/overview?id=w-arroyo_LookMomICanFly)
+- **Redis** — Currently on development. Handles JWT token validation, token blacklisting (invalidation), and stores additional user session metadata -IP address, token creation timestamp...-.
+- **Caffeine** — Currently on development. Caches frequently searched products in memory to reduce database load and improve response times.
 - **Stripe API** — Integrates secure payment handling.
 - **Twilio API** — Sends SMS notifications for real-time transaction updates.
 - **Thymeleaf** — Used to send dynamic and styled HTML emails.
-- **SonarQube** — All backend code passed Sonar's Quality Gates, ensuring code quality, maintainability, and zero critical bugs. [Check here the analysis.](https://sonarcloud.io/project/overview?id=w-arroyo_LookMomICanFly)
+
 
 This backend follows industry standards and embraces clean code principles. Extensive attention was given to architecture, security, and maintainability.
 
@@ -31,6 +34,7 @@ This backend follows industry standards and embraces clean code principles. Exte
 
 - **GitHub Actions** — Configured for continuous integration and to enforce quality checks before allowing merges to the main branch.
 - **Version Control** — Git used rigorously throughout the project with structured commits and pull request reviews.
+- **Docker** — Containerizes the full application.
 
 ## Frontend
 
