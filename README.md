@@ -10,7 +10,7 @@
 
 ## Project Overview
 
-"LOOK MOM I CAN FLY" is a full-stack e-commerce platform built to showcase advanced programming skills, particularly in backend development. This project emulates the mechanics of a real-time resale marketplace, enabling users to buy and sell high-demand products such as sneakers and streetwear.
+"LOOK MOM I CAN FLY" is a full-stack e-commerce platform built to showcase advanced programming skills, particularly in backend development. This project emulates the mechanics of a real-time resale marketplace, enabling users to buy and sell hype products such as sneakers and streetwear.
 
 ## Backend
 
@@ -21,8 +21,8 @@
 - **Gradle** — Used as the project's build tool, optimized for performance and continuous delivery.
 - **Spring Security + JWT** — Implements secure user authentication, role-based access control, and token-based session handling.
 - **SonarQube** — All backend code passed Sonar's Quality Gates, ensuring code quality, maintainability, and zero critical bugs. [Check here the analysis.](https://sonarcloud.io/project/overview?id=w-arroyo_LookMomICanFly)
-- **Redis** — Currently on development. Handles JWT token validation, token blacklisting (invalidation), and stores additional user session metadata -IP address, token creation timestamp...-.
-- **Caffeine** — Currently on development. Caches frequently searched products in memory to reduce database load and improve response times.
+- **Redis** — Handles JWT token validation, token blacklisting (invalidation), and stores additional user session metadata -IP address, device type, token creation timestamp...-.
+- **Mockito: JUnit** — Currently on development. For unitary tests.
 - **Stripe API** — Integrates secure payment handling.
 - **Twilio API** — Sends SMS notifications for real-time transaction updates.
 - **Thymeleaf** — Used to send dynamic and styled HTML emails.
