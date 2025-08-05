@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets;
 public class AppConfig {
 
     private final static String SHIPPING_LABELS_PATH = System.getProperty("user.dir")+ File.separator+"Shipping Labels"+File.separator;
-    private static String aesKey, emailAddress, tokenSigningKey, tokenPrefix, userTokensPrefix;
+    private static String aesKey, emailAddress, tokenSigningKey, tokenPrefix, userTokensPrefix, visitorInfoAttribute;
     private static int tokenLength;
     private static double sellingShippingPrice, operationalFee;
 
@@ -36,6 +36,11 @@ public class AppConfig {
     @Value("${app.redisTokenPrefix}")
     public void setJwtTokenPrefix(String value) {
         tokenPrefix = value;
+    }
+
+    @Value("${app.visitorInfoAttribute}")
+    public void setVisitorInfoAtt(String value) {
+        visitorInfoAttribute = value;
     }
 
     @Value("${app.redisUserIdSetPrefix}")
@@ -70,6 +75,10 @@ public class AppConfig {
         return emailAddress;
     }
 
+    public static String getVisitorInfoAtt() {
+        return visitorInfoAttribute;
+    }
+
     public static int getTokenDuration(){
         return tokenLength;
     }
@@ -92,6 +101,10 @@ public class AppConfig {
 
     public static SecretKey getTokenSigningSecretKey(){
         return Keys.hmacShaKeyFor(tokenSigningKey.getBytes(StandardCharsets.UTF_8));
+    }
+
+    public String getVisitorInfoAttrib() {
+        return visitorInfoAttribute;
     }
 
     @Bean

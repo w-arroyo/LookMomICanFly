@@ -1,17 +1,23 @@
 package com.alvarohdezarroyo.lookmomicanfly.Config;
 
+import com.alvarohdezarroyo.lookmomicanfly.Services.RedisTokenService;
+import com.alvarohdezarroyo.lookmomicanfly.Utils.Extractors.JwtTokenExtractor;
+import com.alvarohdezarroyo.lookmomicanfly.Utils.Extractors.VisitorInfoExtractor;
 import com.alvarohdezarroyo.lookmomicanfly.Utils.Filters.JwtAuthenticationFilter;
+import com.alvarohdezarroyo.lookmomicanfly.Utils.Filters.VisitorInfoFilter;
 import com.alvarohdezarroyo.lookmomicanfly.Utils.Handlers.JwtLogoutHandler;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -25,9 +31,17 @@ public class SecurityConfig {
 
     @Autowired
     private final JwtLogoutHandler logoutHandler;
+    private final RedisTokenService redisTokenService;
+    private final VisitorInfoExtractor visitorInfoExtractor;
+    private final JwtTokenExtractor jwtTokenExtractor;
+    private final AppConfig appConfig;
 
-    public SecurityConfig(JwtLogoutHandler logoutHandler) {
+    public SecurityConfig(JwtLogoutHandler logoutHandler, RedisTokenService redisTokenService, VisitorInfoExtractor visitorInfoExtractor, JwtTokenExtractor jwtTokenExtractor, @Lazy AppConfig appConfig) {
         this.logoutHandler = logoutHandler;
+        this.redisTokenService = redisTokenService;
+        this.visitorInfoExtractor = visitorInfoExtractor;
+        this.jwtTokenExtractor = jwtTokenExtractor;
+        this.appConfig = appConfig;
     }
 
     @Bean
@@ -71,13 +85,14 @@ public class SecurityConfig {
                     auth.anyRequest().authenticated(); // requires being logged in to access any request
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // no sessions
-                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class) // filters token
+                .addFilterBefore(visitorInfoFilter(), BasicAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class) // filters token. that is why that class is not annotated as @Component, cause Spring would create the same filter twice
                 .formLogin(AbstractHttpConfigurer::disable) // disables login via html form
                 .logout(logout -> logout
                         .logoutUrl("/api/users/logout")
                         .addLogoutHandler(logoutHandler) // handles the logout process (this class implements LogoutHandler)
                         .logoutSuccessHandler((request, response, authentication) -> {
-                            response.setStatus(HttpServletResponse.SC_OK);
+                            response.setStatus(HttpStatus.OK.value());
                             response.getWriter().write("Successful logout.");
                         }));
         return http.build();
@@ -96,7 +111,12 @@ public class SecurityConfig {
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter();
+        return new JwtAuthenticationFilter(redisTokenService, jwtTokenExtractor);
+    }
+
+    @Bean
+    public VisitorInfoFilter visitorInfoFilter() {
+        return new VisitorInfoFilter(visitorInfoExtractor, appConfig.getVisitorInfoAttrib());
     }
 
 }

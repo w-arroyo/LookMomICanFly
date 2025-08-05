@@ -8,6 +8,7 @@ import com.alvarohdezarroyo.lookmomicanfly.Exceptions.UnauthorizedRequestExcepti
 import com.alvarohdezarroyo.lookmomicanfly.Models.User;
 import com.alvarohdezarroyo.lookmomicanfly.Repositories.UserRepository;
 import com.alvarohdezarroyo.lookmomicanfly.Utils.Generators.TokenGenerator;
+import com.alvarohdezarroyo.lookmomicanfly.Utils.Validators.TokenValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,10 +29,12 @@ public class AuthService implements UserDetailsService {
     @Autowired
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
+    private final RedisTokenService redisTokenService;
 
-    public AuthService(UserRepository userRepository, @Lazy AuthenticationManager authenticationManager) {
+    public AuthService(UserRepository userRepository, @Lazy AuthenticationManager authenticationManager, RedisTokenService redisTokenService) {
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
+        this.redisTokenService = redisTokenService;
     }
 
     @Override
@@ -49,11 +52,14 @@ public class AuthService implements UserDetailsService {
         );
     }
 
-    public String authenticateUserAndGenerateToken(String email, String password){
+    public String authenticateUserAndGenerateToken(String email, String password, String ip, String device, String browser, String os, String browserType) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(email, password));
-            return TokenGenerator.generateToken(authentication.getName());
+            String userId = authentication.getName();
+            String token = TokenGenerator.generateToken(userId);
+            redisTokenService.save(token, userId, ip, device, browser, os, browserType);
+            return token;
         } catch (AuthenticationException ex){
             throw new LoginUnsuccessfulException("Wrong credentials.");
         }
@@ -79,6 +85,12 @@ public class AuthService implements UserDetailsService {
         if(!userRepository.findById(getAuthenticatedUserId()).orElseThrow(
                 ()-> new EntityNotFoundException("User id does not exist.")
         ).getUserType().equals(UserType.ADMIN))
+            throw new FraudulentRequestException("You do not have permission to make this request.");
+    }
+
+    public void logUserOut(String token) {
+        final String userId = TokenValidator.getTokenUserId(token);
+        if (!redisTokenService.removeToken(userId, token))
             throw new FraudulentRequestException("You do not have permission to make this request.");
     }
 

@@ -22,12 +22,15 @@ services:
     container_name: backend
     depends_on:
       - mysql
+      - redis
     ports:
       - "8080:8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/lookmomicanfly?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: 12345
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PORT: 6379
     restart: on-failure
     networks:
       - app-network
@@ -66,9 +69,21 @@ services:
     networks:
       - app-network
 
+  redis:
+    image: redis:7.2
+    container_name: redis-local
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: [ "redis-server", "--appendonly", "yes" ]
+    networks:
+      - app-network
 
 volumes:
   mysql-lookmomicanfly-data:
+  redis_data:
 
 networks:
   app-network:
